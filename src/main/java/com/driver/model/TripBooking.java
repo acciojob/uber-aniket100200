@@ -1,40 +1,58 @@
 package com.driver.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
-@Table
-public  class TripBooking {
+public class TripBooking {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int tripBookingId;
 
-    String fromLocation;
-    String toLocation;
+    private String fromLocation;
+    private String toLocation;
+    private int distanceInKm;
+    @Enumerated(EnumType.STRING)
+    private TripStatus status;
+    private int bill;
 
-    int distanceInKm;
+    @ManyToOne
+    @JoinColumn
+    Driver driver;
 
-    @Enumerated(value = EnumType.STRING)
-    TripStatus status;
-    int bill;
 
-    public TripBooking()
-    {
+    @ManyToOne
+    @JoinColumn
+    Customer customer;
 
+
+    public Driver getDriver() {
+        return driver;
     }
 
-    @ManyToOne
-    @JoinColumn
-    @JsonIgnore
-     private Driver driver;
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
 
+    public Customer getCustomer() {
+        return customer;
+    }
 
-    @ManyToOne
-    @JoinColumn
-    @JsonIgnore
-   private Customer customer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public TripBooking() {
+    }
+
+    public TripBooking(int tripBookingId, String fromLocation, String toLocation, int distanceInKm, TripStatus status, int bill) {
+        this.tripBookingId = tripBookingId;
+        this.fromLocation = fromLocation;
+        this.toLocation = toLocation;
+        this.distanceInKm = distanceInKm;
+        this.status = status;
+        this.bill = bill;
+    }
 
     public int getTripBookingId() {
         return tripBookingId;
@@ -82,21 +100,5 @@ public  class TripBooking {
 
     public void setBill(int bill) {
         this.bill = bill;
-    }
-
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 }
